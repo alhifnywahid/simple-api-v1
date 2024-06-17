@@ -8,8 +8,11 @@ const config = require("./schema/config");
 const docs = require("./schema/endpoint");
 const api = require("./router/api");
 const anim = require("./lib/print");
-
+require('dotenv').config();
 const app = express();
+
+const port = process.env.PORT || 3000;
+console.log(process.env.BASE_URL)
 
 // Middleware Configuration
 app.enable("trust proxy");
@@ -31,7 +34,7 @@ app.use(
 
 // 404 Error Handler
 app.use((req, res, next) => {
-  res.status(404).send("Sorry, can't find that!");
+  res.status(404).send("kontent yang ada cari tidak ada!");
 });
 
 // General Error Handler
@@ -41,7 +44,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start the Server
-app.listen(config.options.port, () => {
-  console.log(chalk.cyan("HitamAPIs - Base by @Irull2nd"));
-  anim(`Server is running on http://localhost:${config.options.port}`);
+app.listen(port, () => {
+  console.log(chalk.cyan("GopretAPIs - Simple Base Rest API"));
+  anim(`Server is running on http://localhost:${port}`);
 });
