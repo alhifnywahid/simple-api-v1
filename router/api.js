@@ -126,7 +126,26 @@ router.post("/ai/luminai", async (req, res) => {
 		res.status(500).json(messages.error);
 	}
 });
-// payment.qris(20000, "Roni").then((e) => console.log(e));
+
+/* ~~~~~~ payment ~~~~~~ */
+
+router.get("/payment/check", async (req, res) => {
+	const { tx_id } = req.query;
+	if (!tx_id)
+		return res.status(400).json({
+			status: 400,
+			message: "tx_id wajib di isi!",
+			developer: dev,
+		});
+
+	try {
+		const data = await payment.check(tx_id);
+		if (!data) return res.status(404).json(messages.notRes);
+		res.json(data);
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
 
 router.get("/payment/qris", async (req, res) => {
 	const { ammount, name, phone = null, note = null, email = null } = req.query;
@@ -145,6 +164,30 @@ router.get("/payment/qris", async (req, res) => {
 
 	try {
 		const data = await payment.qris(ammount, name, phone, note, email);
+		if (!data) return res.status(404).json(messages.notRes);
+		res.json(data);
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
+
+router.get("/payment/shopeepay", async (req, res) => {
+	const { ammount, name, phone = null, note = null, email = null } = req.query;
+	if (ammount < 10000)
+		return res.status(400).json({
+			status: 400,
+			developer: dev,
+			message: "Pembayaran minimal Rp 10.000",
+		});
+	if (!ammount && !name)
+		return res.status(400).json({
+			status: 400,
+			message: "ammount dan nama wajib di isi!",
+			developer: dev,
+		});
+
+	try {
+		const data = await payment.shopeepay(ammount, name, phone, note, email);
 		if (!data) return res.status(404).json(messages.notRes);
 		res.json(data);
 	} catch (e) {

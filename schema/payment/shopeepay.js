@@ -1,7 +1,7 @@
 module.exports = {
 	get: {
 		tags: ["Payment"],
-		summary: "Pembayaran dengan QRIS Shopee.",
+		summary: "Pembayaran dengan Link Shopee.",
 		parameters: [
 			{
 				in: "query",

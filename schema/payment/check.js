@@ -1,49 +1,16 @@
 module.exports = {
 	get: {
 		tags: ["Payment"],
-		summary: "Pembayaran dengan QRIS Shopee.",
+		summary: "Cek status pembayaran.",
 		parameters: [
 			{
 				in: "query",
-				name: "ammount",
+				name: "tx_id",
 				schema: {
 					type: "string",
 				},
 				required: true,
-				description: "Nominal pembayaran minimal Rp 10.000",
-			},
-			{
-				in: "query",
-				name: "nama",
-				schema: {
-					type: "string",
-				},
-				required: true,
-				description: "Nama pembeli.",
-			},
-			{
-				in: "query",
-				name: "nomor hp",
-				schema: {
-					type: "string",
-				},
-				description: "Nomor Handphone pembeli.",
-			},
-			{
-				in: "query",
-				name: "catatan",
-				schema: {
-					type: "string",
-				},
-				description: "Catatan pembeli.",
-			},
-			{
-				in: "query",
-				name: "email aktif",
-				schema: {
-					type: "string",
-				},
-				description: "Email aktif pembeli.",
+				description: "id transaksi.",
 			},
 		],
 		responses: {

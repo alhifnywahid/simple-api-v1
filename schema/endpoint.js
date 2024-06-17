@@ -54,7 +54,9 @@ const swaggerDocument = {
 	],
 	paths: {
 		"/api/downloader/tiktok": require("./downloader/tiktok"),
+		"/api/payment/check": require("./payment/check"),
 		"/api/payment/qris": require("./payment/qris"),
+		"/api/payment/shopeepay": require("./payment/shopeepay"),
 	},
 	"x-request-time": new Date().toISOString(),
 };
