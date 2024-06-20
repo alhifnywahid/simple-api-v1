@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(
-  "/documentation",
+  "/dokumentasi",
   swaggerUi.serve,
   swaggerUi.setup(docs.swaggerDocument, docs.options),
 );
