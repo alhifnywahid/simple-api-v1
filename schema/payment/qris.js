@@ -1,6 +1,6 @@
 module.exports = {
 	get: {
-		tags: ["Payment"],
+		tags: ["Payment Gateway"],
 		summary: "Pembayaran dengan QRIS Shopee.",
 		parameters: [
 			{

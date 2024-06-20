@@ -44,7 +44,7 @@ const swaggerDocument = {
 	],
 	tags: [
 		{
-			name: "Payment",
+			name: "Payment Gateway",
 			description: "List pembayaran",
 		},
 		{

@@ -1,6 +1,11 @@
 const axios = require("axios");
 const { dateFormat } = require("./../lib/Function");
+const md5 = require("md5");
+const { UniqueString } = require("unique-string-generator");
 
+const merchant_id = "M240521VTDDF028";
+const screet_key = "ce253713af32cb9564d941d43c3cac1184b7fe6e19461d5c5b0d50c438747fb6";
+const reff_id = UniqueString();
 const qris = async (ammount, name, phone = null, note = null, email = null) => {
 	try {
 		const data = {
