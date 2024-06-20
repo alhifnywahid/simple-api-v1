@@ -19,7 +19,7 @@ app.enable("trust proxy");
 app.set("json spaces", 2);
 app.use(cors());
 app.use("/api", api);
-app.use(express.static(path.join(__dirname, "/resources")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 // Route Handlers
 app.get("/", (req, res) => {

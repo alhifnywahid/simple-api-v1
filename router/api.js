@@ -35,6 +35,24 @@ const messages = {
 	},
 };
 
+// e - commerce
+router.get("/ecommerce/products", async (req, res) => {
+	try {
+		const data = await fetch("https://gist.githubusercontent.com/alhifnywahid/0d58fcea7f29b0a7dbb7526156189803/raw/57916552249b834c1b35804473f06fdee33615a8/blibli.json");
+		const final = await data.json()
+		if (!data) return res.status(404).json(messages.notRes);
+		res.json({
+			status: true,
+			developer: dev,
+			result: {
+				message: final,
+			},
+		});
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
+
 // AI Routes
 router.get("/ai/chatgpt", async (req, res) => {
 	const { query } = req.query;

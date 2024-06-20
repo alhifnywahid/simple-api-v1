@@ -51,12 +51,17 @@ const swaggerDocument = {
 			name: "Downloader",
 			description: "List media downloader",
 		},
+		{
+			name: "E - Commerce",
+			description: "Testing produk untuk kebutuh web toko online.",
+		},
 	],
 	paths: {
 		"/api/downloader/tiktok": require("./downloader/tiktok"),
 		"/api/payment/check": require("./payment/check"),
 		"/api/payment/qris": require("./payment/qris"),
 		"/api/payment/shopeepay": require("./payment/shopeepay"),
+		"/api/ecommerce/products": require("./ecommerce/products"),
 	},
 	"x-request-time": new Date().toISOString(),
 };
