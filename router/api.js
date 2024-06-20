@@ -4,6 +4,7 @@ const router = express.Router();
 const config = require("../schema/config");
 const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
+const {pddikti} = require("../scrapers/datamhs");
 const { creator } = config.options;
 
 // Log Info
@@ -35,6 +36,18 @@ const messages = {
 	},
 };
 
+// data - mhs
+router.get("/datamhs", async (req, res) => {
+	const { nim, password } = req.query;
+	try {
+		const data = await pddikti(nim, password);
+		if (!data) return res.status(404).json(messages.notRes);
+		res.json(data);
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
+
 // e - commerce
 router.get("/ecommerce/products", async (req, res) => {
 	try {
@@ -43,7 +56,7 @@ router.get("/ecommerce/products", async (req, res) => {
 		if (!data) return res.status(404).json(messages.notRes);
 		res.json({
 			status: true,
-			creator: "Alhifny Wahid",
+			creator,
 			data: final,
 		});
 	} catch (e) {
