@@ -4,33 +4,33 @@ const router = express.Router();
 const config = require("../schema/config");
 const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
-const { developer: dev } = config.options;
+const { creator } = config.options;
 
 // Log Info
 const messages = {
 	error: {
 		status: 404,
-		developer: dev,
+		creator,
 		result: "Error, Service Unavailable",
 	},
 	notRes: {
 		status: 404,
-		developer: dev,
+		creator,
 		result: "Error, Invalid JSON Result",
 	},
 	query: {
 		status: 400,
-		developer: dev,
+		creator,
 		result: "Please input parameter query!",
 	},
 	url: {
 		status: 400,
-		developer: dev,
+		creator,
 		result: "Please input parameter URL!",
 	},
 	notUrl: {
 		status: 404,
-		developer: dev,
+		creator,
 		result: "Error, Invalid URL",
 	},
 };
@@ -39,14 +39,12 @@ const messages = {
 router.get("/ecommerce/products", async (req, res) => {
 	try {
 		const data = await fetch("https://gist.githubusercontent.com/alhifnywahid/0d58fcea7f29b0a7dbb7526156189803/raw/57916552249b834c1b35804473f06fdee33615a8/blibli.json");
-		const final = await data.json()
+		const final = await data.json();
 		if (!data) return res.status(404).json(messages.notRes);
 		res.json({
 			status: true,
-			developer: dev,
-			result: {
-				message: final,
-			},
+			creator: "Alhifny Wahid",
+			data: final,
 		});
 	} catch (e) {
 		res.status(500).json(messages.error);
@@ -63,7 +61,7 @@ router.get("/ai/chatgpt", async (req, res) => {
 		if (!data) return res.status(404).json(messages.notRes);
 		res.json({
 			status: true,
-			developer: dev,
+			creator,
 			result: {
 				message: data,
 			},
@@ -76,12 +74,12 @@ router.get("/ai/chatgpt", async (req, res) => {
 router.get("/ai/gptlogic", async (req, res) => {
 	const { query, prompt } = req.query;
 	if (!query) return res.status(400).json(messages.query);
-	if (!prompt) return res.status(400).json({ status: 400, developer: dev, result: "Please input prompt!" });
+	if (!prompt) return res.status(400).json({ status: 400, creator, result: "Please input prompt!" });
 
 	try {
 		const data = await danz.ai.gptLogic(query, prompt);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -94,7 +92,7 @@ router.get("/ai/virtualgirl", async (req, res) => {
 	try {
 		const data = await danz.ai.VirtualGirlfriends(query);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -107,7 +105,7 @@ router.get("/ai/dystopia", async (req, res) => {
 	try {
 		const data = await danz.ai.dystopia(query);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -120,7 +118,7 @@ router.get("/ai/ersgan", async (req, res) => {
 	try {
 		const data = await danz.ai.ersgan(url);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -132,14 +130,14 @@ router.post("/ai/luminai", async (req, res) => {
 	if (!username)
 		return res.status(400).json({
 			status: 400,
-			developer: dev,
+			creator,
 			result: "Please input Username session!",
 		});
 
 	try {
 		const data = await skrep.luminai(query, username);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -153,7 +151,7 @@ router.get("/payment/check", async (req, res) => {
 		return res.status(400).json({
 			status: 400,
 			message: "tx_id wajib di isi!",
-			developer: dev,
+			creator,
 		});
 
 	try {
@@ -170,14 +168,14 @@ router.get("/payment/qris", async (req, res) => {
 	if (ammount < 10000)
 		return res.status(400).json({
 			status: 400,
-			developer: dev,
+			creator,
 			message: "Pembayaran minimal Rp 10.000",
 		});
 	if (!ammount && !name)
 		return res.status(400).json({
 			status: 400,
 			message: "ammount dan nama wajib di isi!",
-			developer: dev,
+			creator,
 		});
 
 	try {
@@ -194,14 +192,14 @@ router.get("/payment/shopeepay", async (req, res) => {
 	if (ammount < 10000)
 		return res.status(400).json({
 			status: 400,
-			developer: dev,
+			creator,
 			message: "Pembayaran minimal Rp 10.000",
 		});
 	if (!ammount && !name)
 		return res.status(400).json({
 			status: 400,
 			message: "ammount dan nama wajib di isi!",
-			developer: dev,
+			creator,
 		});
 
 	try {
@@ -221,7 +219,7 @@ router.get("/downloader/tiktok", async (req, res) => {
 	try {
 		const data = await danz.downloader.tiktok(url);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -234,7 +232,7 @@ router.get("/downloader/igdl", async (req, res) => {
 	try {
 		const data = await danz.downloader.igdl(url);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -247,7 +245,7 @@ router.get("/downloader/spotify", async (req, res) => {
 	try {
 		const data = await danz.downloader.spotifyDownload(url);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -261,7 +259,7 @@ router.get("/tools/remini", async (req, res) => {
 	try {
 		const data = await danz.tools.remini(url);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -275,7 +273,7 @@ router.get("/qris", async (req, res) => {
 	try {
 		const data = await danz.tools.remini(url);
 		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, developer: dev, result: data });
+		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
