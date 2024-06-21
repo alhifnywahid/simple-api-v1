@@ -37,7 +37,7 @@ const messages = {
 };
 
 // data - mhs
-router.get("/datamhs", async (req, res) => {
+router.get("/cekmhs", async (req, res) => {
 	const { nim, password } = req.query;
 	try {
 		if (!nim || !password)
