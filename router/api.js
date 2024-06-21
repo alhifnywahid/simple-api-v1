@@ -54,7 +54,8 @@ router.get("/ecommerce/products", async (req, res) => {
 
 // data - mhs
 router.get("/cekbro", async (req, res) => {
-	console.log("INI DATA : ", res.query)
+	console.log("Request URL: ", req.url);
+	console.log("Request Query: ", req.query);
 	const { nim, password } = req.query;
 	try {
 		if (!nim || !password)
@@ -237,7 +238,8 @@ router.get("/payment/shopeepay", async (req, res) => {
 
 // Downloader Routes
 router.get("/downloader/tiktok", async (req, res) => {
-	console.log("Tiktok Query : ", res.query)
+	console.log("Request URL: ", req.url);
+	console.log("Request Query: ", req.query);
 	const { url } = req.query;
 	if (!url) return res.status(400).json(messages.url);
 
