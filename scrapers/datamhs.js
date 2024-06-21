@@ -23,23 +23,23 @@ const pddikti = async (nim, password) => {
 		program_studi: result.data.dataumum.namaprodi,
 		jenjang: result.data.dataumum.namajenjang,
 		tahun_masuk: result.data.dataumum.mulai_smt.slice(0, 4),
-		status_kuliah: result.data.datastatuskuliah.map((data, index) => {
-			const mataKuliah = result.data.datastudi
-				.filter((matkul) => matkul.id_smt === data.id_smt)
-				.map((matkul) => ({
-					kode: matkul.kode_mk,
-					nama_mk: matkul.nm_mk,
-					sks: matkul.sks_mk,
-				}));
+		// status_kuliah: result.data.datastatuskuliah.map((data, index) => {
+		// 	const mataKuliah = result.data.datastudi
+		// 		.filter((matkul) => matkul.id_smt === data.id_smt)
+		// 		.map((matkul) => ({
+		// 			kode: matkul.kode_mk,
+		// 			nama_mk: matkul.nm_mk,
+		// 			sks: matkul.sks_mk,
+		// 		}));
 
-			return {
-				semester: index + 1,
-				tahun: data.id_smt.slice(0, 4),
-				sks_diambil: data.sks_smt,
-				status: data.nm_stat_mhs,
-				matakuliah: mataKuliah,
-			};
-		}),
+		// 	return {
+		// 		semester: index + 1,
+		// 		tahun: data.id_smt.slice(0, 4),
+		// 		sks_diambil: data.sks_smt,
+		// 		status: data.nm_stat_mhs,
+		// 		matakuliah: mataKuliah,
+		// 	};
+		// }),
 	};
 };
 
