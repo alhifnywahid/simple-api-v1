@@ -4,7 +4,7 @@ const router = express.Router();
 const config = require("../schema/config");
 const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
-const datamhs	 = require("../scrapers/datamhs");
+const datamhs = require("../scrapers/datamhs");
 const { creator } = config.options;
 
 // Log Info
@@ -36,24 +36,6 @@ const messages = {
 	},
 };
 
-// data - mhs
-router.get("/cekmhs", async (req, res) => {
-	const { nim, password } = req.query;
-	try {
-		if (!nim || !password)
-			return res.status(400).json({
-				status: false,
-				creator,
-				messeage: "nim & password wajib di isi!",
-			});
-		const data = await datamhs.pddikti(nim, password);
-		// if (!data) return res.status(404).json(messages.notRes);
-		res.status(200).json(data);
-	} catch (e) {
-		res.status(500).json(messages.error);
-	}
-});
-
 // e - commerce
 router.get("/ecommerce/products", async (req, res) => {
 	try {
@@ -65,6 +47,29 @@ router.get("/ecommerce/products", async (req, res) => {
 			creator,
 			data: final,
 		});
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
+
+// data - mhs
+router.get("/cekbro", async (req, res) => {
+	console.log("INI DATA : ", res.query)
+	const { nim, password } = req.query;
+	try {
+		if (!nim || !password)
+			return res.status(400).json({
+				status: false,
+				creator,
+				messeage: "nim & password wajib di isi!",
+			});
+		const data = await datamhs.pddikti(nim, password);
+		console.log("HAHAHAA");
+		if (!data)
+			return res.status(404).json({
+				messages: "Masih eror bro!",
+			});
+		res.status(200).json(data);
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
@@ -232,6 +237,7 @@ router.get("/payment/shopeepay", async (req, res) => {
 
 // Downloader Routes
 router.get("/downloader/tiktok", async (req, res) => {
+	console.log("INI DATA : ", res.query)
 	const { url } = req.query;
 	if (!url) return res.status(400).json(messages.url);
 

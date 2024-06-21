@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const pddikti = async (nim, pass) => {
-	const response = await axios.post("https://e-learning.unitomo.ac.id/login/proses", new URLSearchParams(`username=${nim}&password=${pass}`), {
+const pddikti = async (nim, password) => {
+	const response = await axios.post("https://e-learning.unitomo.ac.id/login/proses", new URLSearchParams(`username=${nim}&password=${password}`), {
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
 		},
@@ -43,6 +43,4 @@ const pddikti = async (nim, pass) => {
 	};
 };
 
-module.exports = {
-	pddikti,
-};
+module.exports = { pddikti };
