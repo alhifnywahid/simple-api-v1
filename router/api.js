@@ -4,7 +4,7 @@ const router = express.Router();
 const config = require("../schema/config");
 const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
-const {pddikti} = require("../scrapers/datamhs");
+const datamhs	 = require("../scrapers/datamhs");
 const { creator } = config.options;
 
 // Log Info
@@ -40,12 +40,13 @@ const messages = {
 router.get("/datamhs", async (req, res) => {
 	const { nim, password } = req.query;
 	try {
-		if (!nim || !password) return res.status(400).json({
-			status: false,
-			creator,
-			messeage: "nim & password wajib di isi!"
-		});
-		const data = await pddikti(nim, password);
+		if (!nim || !password)
+			return res.status(400).json({
+				status: false,
+				creator,
+				messeage: "nim & password wajib di isi!",
+			});
+		const data = await datamhs.pddikti(nim, password);
 		// if (!data) return res.status(404).json(messages.notRes);
 		res.json(data);
 	} catch (e) {
