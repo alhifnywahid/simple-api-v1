@@ -40,6 +40,11 @@ const messages = {
 router.get("/datamhs", async (req, res) => {
 	const { nim, password } = req.query;
 	try {
+		if (!nim || !password) return res.status(400).json({
+			status: false,
+			creator,
+			messeage: "nim & password wajib di isi!"
+		});
 		const data = await pddikti(nim, password);
 		if (!data) return res.status(404).json(messages.notRes);
 		res.json(data);

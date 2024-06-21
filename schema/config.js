@@ -8,8 +8,8 @@ const options = {
 };
 
 const host = {
-	// BASE_URL: "https://gopretapi.vercel.app",
-	BASE_URL: "http://localhost:3000",
+	BASE_URL: "https://gopretapi.vercel.app",
+	// BASE_URL: "http://localhost:3000",
 };
 
 module.exports = {
