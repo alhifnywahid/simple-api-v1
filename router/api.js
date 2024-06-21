@@ -237,7 +237,7 @@ router.get("/payment/shopeepay", async (req, res) => {
 
 // Downloader Routes
 router.get("/downloader/tiktok", async (req, res) => {
-	console.log("INI DATA : ", res.query)
+	console.log("Tiktok Query : ", res.query)
 	const { url } = req.query;
 	if (!url) return res.status(400).json(messages.url);
 
