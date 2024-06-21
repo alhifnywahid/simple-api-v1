@@ -46,7 +46,7 @@ router.get("/datamhs", async (req, res) => {
 			messeage: "nim & password wajib di isi!"
 		});
 		const data = await pddikti(nim, password);
-		if (!data) return res.status(404).json(messages.notRes);
+		// if (!data) return res.status(404).json(messages.notRes);
 		res.json(data);
 	} catch (e) {
 		res.status(500).json(messages.error);
