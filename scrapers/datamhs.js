@@ -1,9 +1,6 @@
 const axios = require("axios");
 
 exports.pddikti = async (nim, pass) => {
-  console.log(nim, pass);
-
-  // Login ke e-learning
   const response = await axios.post(
     "https://e-learning.unitomo.ac.id/login/proses",
     new URLSearchParams(`username=${nim}&password=${pass}`),
@@ -17,8 +14,6 @@ exports.pddikti = async (nim, pass) => {
 
   const data = response.data;
   if (!data.success) return data;
-
-  // Mengambil data dari API PDDIKTI
   const checkPddikti = await axios.get(`https://api-frontend.kemdikbud.go.id/hit_mhs/${nim}`);
   const link = checkPddikti.data.mahasiswa[0]["website-link"].split("/")[2];
   const result = await axios.get(`https://api-frontend.kemdikbud.go.id/detail_mhs/${link}`);

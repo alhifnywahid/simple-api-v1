@@ -48,7 +48,7 @@ router.get("/datamhs", async (req, res) => {
 			});
 		const data = await datamhs.pddikti(nim, password);
 		// if (!data) return res.status(404).json(messages.notRes);
-		res.json(data);
+		res.status(200).json(data);
 	} catch (e) {
 		res.status(500).json(messages.error);
 	}
