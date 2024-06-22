@@ -7,6 +7,15 @@ const pddikti = async (nim, password) => {
 		},
 		method: "POST",
 	});
+	return response.data;
+};
+/* const pddikti = async (nim, password) => {
+	const response = await axios.post("https://e-learning.unitomo.ac.id/login/proses", new URLSearchParams(`username=${nim}&password=${password}`), {
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+		},
+		method: "POST",
+	});
 
 	const data = response.data;
 	if (!data.success) return data;
@@ -41,6 +50,6 @@ const pddikti = async (nim, password) => {
 		// 	};
 		// }),
 	};
-};
+}; */
 
 module.exports = { pddikti };
