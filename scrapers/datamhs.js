@@ -1,13 +1,49 @@
 const axios = require("axios");
 
 const pddikti = async (nim, password) => {
-	const response = await axios.post("https://e-learning.unitomo.ac.id/login/proses", new URLSearchParams(`username=${nim}&password=${password}`), {
+	const resElearning = await fetch("https://e-learning.unitomo.ac.id/login/proses", {
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
 		},
+		body: `username=${nim}&password=${password}`,
 		method: "POST",
 	});
-	return response.data;
+
+	const dataElearning = await resElearning.json();
+	if (!dataElearning.success) return dataElearning;
+	const checkPddikti = await fetch(`https://api-frontend.kemdikbud.go.id/hit_mhs/${nim}`);
+	const checkPddiktiJson = await checkPddikti.json();
+	const link = checkPddiktiJson.mahasiswa[0]["website-link"].split("/")[2];
+	const getData = await fetch(`https://api-frontend.kemdikbud.go.id/detail_mhs/${link}`);
+	const result = await getData.json();
+
+	return {
+		jenis_pendaftaran: result.dataumum.nm_jns_daftar,
+		nama: result.dataumum.nm_pd,
+		jenis_kelamin: result.dataumum.jk === "L" ? "Laki-Laki" : "Perempuan",
+		nim: result.dataumum.nipd,
+		universitas: result.dataumum.namapt,
+		program_studi: result.dataumum.namaprodi,
+		jenjang: result.dataumum.namajenjang,
+		tahun_masuk: result.dataumum.mulai_smt.slice(0, 4),
+		status_kuliah: result.datastatuskuliah.map((data, index) => {
+			const mataKuliah = result.datastudi
+				.filter((matkul) => matkul.id_smt === data.id_smt)
+				.map((matkul) => ({
+					kode: matkul.kode_mk,
+					nama_mk: matkul.nm_mk,
+					sks: matkul.sks_mk,
+				}));
+
+			return {
+				semester: index + 1,
+				tahun: data.id_smt.slice(0, 4),
+				sks_diambil: data.sks_smt,
+				status: data.nm_stat_mhs,
+				matakuliah: mataKuliah,
+			};
+		}),
+	};
 };
 /* const pddikti = async (nim, password) => {
 	const response = await axios.post("https://e-learning.unitomo.ac.id/login/proses", new URLSearchParams(`username=${nim}&password=${password}`), {
