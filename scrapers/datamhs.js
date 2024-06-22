@@ -10,7 +10,11 @@ const pddikti = async (nim, password) => {
 	});
 
 	const dataElearning = await resElearning.json();
-	if (!dataElearning.success) return dataElearning;
+	if (!dataElearning.success)
+		return {
+			status: false,
+			message: dataElearning.message,
+		};
 	const checkPddikti = await fetch(`https://api-frontend.kemdikbud.go.id/hit_mhs/${nim}`);
 	const checkPddiktiJson = await checkPddikti.json();
 	const link = checkPddiktiJson.mahasiswa[0]["website-link"].split("/")[2];

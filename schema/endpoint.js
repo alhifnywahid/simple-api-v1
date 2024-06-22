@@ -62,7 +62,7 @@ const swaggerDocument = {
 		"/api/payment/qris": require("./payment/qris"),
 		"/api/payment/shopeepay": require("./payment/shopeepay"),
 		"/api/ecommerce/products": require("./ecommerce/products"),
-		"/api/cekbro": require("./datamhs"),
+		"/api/mhsvalidation": require("./datamhs"),
 	},
 	"x-request-time": new Date().toISOString(),
 };
