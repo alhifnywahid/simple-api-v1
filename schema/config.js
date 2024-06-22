@@ -8,7 +8,7 @@ const options = {
 };
 
 const host = {
-	BASE_URL: "https://gopretapi.vercel.app",
+	BASE_URL: "https://api.alhifnywahid.xyz",
 	// BASE_URL: "http://localhost:3000",
 };
 
