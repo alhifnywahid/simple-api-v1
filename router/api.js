@@ -54,15 +54,13 @@ router.get("/ecommerce/products", async (req, res) => {
 
 // data - mhs
 router.get("/mhsvalidation", async (req, res) => {
-	console.log("Request URL: ", req.url);
-	console.log("Request Query: ", req.query);
 	const { nim, password } = req.query;
 	try {
 		if (!nim || !password)
 			return res.status(400).json({
 				status: false,
 				creator,
-				messeage: "nim & password wajib di isi!",
+				messeage: "NIM & Password wajib di isi!",
 			});
 		const data = await datamhs.pddikti(nim, password);
 		console.log("HAHAHAA");

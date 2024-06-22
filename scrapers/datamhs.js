@@ -1,5 +1,3 @@
-const axios = require("axios");
-
 const pddikti = async (nim, password) => {
 	const resElearning = await fetch("https://e-learning.unitomo.ac.id/login/proses", {
 		headers: {
@@ -11,10 +9,15 @@ const pddikti = async (nim, password) => {
 
 	const dataElearning = await resElearning.json();
 	if (!dataElearning.success)
-		return {
-			status: false,
-			message: dataElearning.message,
-		};
+		return dataElearning.message.includes("aktif")
+			? {
+					status: false,
+					message: `NIM (${nim}) tidak terdaftar di UNIVERSITAS UNITOMO.`,
+				}
+			: {
+					status: false,
+					message: `NIM atau Password yang anda masukkan salah.`,
+				};
 	const checkPddikti = await fetch(`https://api-frontend.kemdikbud.go.id/hit_mhs/${nim}`);
 	const checkPddiktiJson = await checkPddikti.json();
 	const link = checkPddiktiJson.mahasiswa[0]["website-link"].split("/")[2];

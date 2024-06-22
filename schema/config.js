@@ -4,7 +4,7 @@ const options = {
 	port: 3000,
 	webName: "GopretAPIs",
 	description: "Simple Base Rest API",
-	favicon: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Black.png/220px-Black.png",
+	favicon: "https://telegra.ph//file/b33ecaa39167b9b509359.png",
 };
 
 const host = {
