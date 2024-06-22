@@ -8,11 +8,9 @@ const config = require("./schema/config");
 const docs = require("./schema/endpoint");
 const api = require("./router/api");
 const anim = require("./lib/print");
-require('dotenv').config();
 const app = express();
 
-const port = process.env.PORT || 3000;
-console.log(process.env.BASE_URL)
+const port = 3000;
 
 // Middleware Configuration
 app.enable("trust proxy");

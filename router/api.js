@@ -75,6 +75,32 @@ router.get("/cekbro", async (req, res) => {
 		res.status(500).json(messages.error);
 	}
 });
+router.get("/mhs", async (req, res) => {
+	const { nim, password } = req.query;
+	try {
+		if (!nim || !password)
+			return res.status(400).json({
+				status: false,
+				creator,
+				messeage: "nim & password wajib di isi!",
+			});
+		const data = await fetch("https://e-learning.unitomo.ac.id/login/proses", {
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+			},
+			body: `username=${nim}&password=${password}`,
+			method: "POST",
+		});
+		const result = await data.json();
+		if (!data)
+			return res.status(404).json({
+				messages: "Masih eror bro!",
+			});
+		res.status(200).json(result);
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
 
 // AI Routes
 router.get("/ai/chatgpt", async (req, res) => {
