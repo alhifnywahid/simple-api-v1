@@ -5,7 +5,7 @@ const config = require("../schema/config");
 const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
 const datamhs = require("../scrapers/datamhs");
-const { getProducts, getSingleProducts } = require("../scrapers/ecommerce");
+const { getProducts, getSingleProducts, searchProducts } = require("../scrapers/ecommerce");
 const { creator } = config.options;
 
 // Log Info
@@ -39,17 +39,34 @@ const messages = {
 
 // e - commerce
 router.get("/ecommerce/products", async (req, res) => {
-	const { q } = req.query;
+	const { start, q } = req.query;
+	const regex = /^[0-9]+$/;
+	if (!regex.test(start) || !regex.test(q)) {
+		return res.status(400).json({
+			status: false,
+			creator,
+			message: "Parameter start & q harus berupa angka!",
+		});
+	}
+
 	try {
-		const data = await getProducts(q);
-		if (!data) return res.status(404).json(messages.notRes);
+		const data = await getProducts(parseInt(start), parseInt(q));
+		if (!data) {
+			return res.status(404).json({
+				status: false,
+				message: "Data tidak ditemukan",
+			});
+		}
 		res.json({
 			status: true,
 			creator,
 			result: data,
 		});
 	} catch (e) {
-		res.status(500).json(messages.error);
+		res.status(500).json({
+			status: false,
+			message: "Terjadi kesalahan pada server",
+		});
 	}
 });
 
@@ -74,6 +91,27 @@ router.get("/ecommerce/product", async (req, res) => {
 	}
 });
 
+router.get("/ecommerce/search", async (req, res) => {
+	const { query, number } = req.query;
+	if (!query)
+		return res.status(400).json({
+			status: false,
+			creator,
+			message: "query wajib di isi!",
+		});
+	try {
+		const data = await searchProducts(query, number);
+		if (!data) return res.status(404).json(messages.notRes);
+		res.json({
+			status: true,
+			creator,
+			result: data,
+		});
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
+
 // data - mhs
 router.get("/mhsvalidation", async (req, res) => {
 	const { nim, password } = req.query;
@@ -85,7 +123,6 @@ router.get("/mhsvalidation", async (req, res) => {
 				messeage: "NIM & Password wajib di isi!",
 			});
 		const data = await datamhs.pddikti(nim, password);
-		console.log("HAHAHAA");
 		if (!data)
 			return res.status(404).json({
 				messages: "Masih eror bro!",
@@ -258,8 +295,6 @@ router.get("/payment/shopeepay", async (req, res) => {
 
 // Downloader Routes
 router.get("/downloader/tiktok", async (req, res) => {
-	console.log("Request URL: ", req.url);
-	console.log("Request Query: ", req.query);
 	const { url } = req.query;
 	if (!url) return res.status(400).json(messages.url);
 

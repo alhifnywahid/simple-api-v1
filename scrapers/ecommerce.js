@@ -6,12 +6,13 @@ const getAllProducts = async () => {
 	return products.data;
 };
 
-const getProducts = async (q = 10) => {
+const getProducts = async (startIndex = 0, q = 10) => {
+	const getItem = startIndex + q;
 	const products = await getAllProducts();
 
 	let productsResult = [];
 
-	for (let i = 0; i < q; i++) {
+	for (let i = startIndex; i < getItem; i++) {
 		productsResult.push(products[i]);
 	}
 
@@ -19,11 +20,38 @@ const getProducts = async (q = 10) => {
 };
 
 const getSingleProducts = async (itemId) => {
-	const products = await getAllProducts()
-  
-  const productResult = products.filter(product => product.id == itemId)
+	const products = await getAllProducts();
+
+	const productResult = products.filter((product) => product.id == itemId);
 
 	return productResult;
 };
 
-module.exports = { getProducts, getSingleProducts };
+const searchProducts = async (query, number = 10) => {
+	const q = query.toLowerCase();
+	const products = await getAllProducts();
+
+	const productResult = products.filter((product) => {
+		const id = product.id.toLowerCase();
+		const title = product.title.toLowerCase();
+		const brand = product.brand.toLowerCase();
+		const price = product.price.toString().toLowerCase();
+		const category = product.category.toLowerCase();
+
+		return id.includes(q) || title.includes(q) || brand.includes(q) || category.includes(q) || price.includes(q);
+	});
+
+	const productResult2 = [];
+
+	const productsLength = productResult.length > number;
+
+	if (productsLength) {
+		for (let i = 0; i < number; i++) {
+			productResult2.push(productResult[i]);
+		}
+	}
+
+	return productsLength ? productResult2 : productResult;
+};
+
+module.exports = { getProducts, getSingleProducts, searchProducts };
