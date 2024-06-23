@@ -5,6 +5,7 @@ const config = require("../schema/config");
 const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
 const datamhs = require("../scrapers/datamhs");
+const { getProducts, getSingleProducts } = require("../scrapers/ecommerce");
 const { creator } = config.options;
 
 // Log Info
@@ -38,14 +39,35 @@ const messages = {
 
 // e - commerce
 router.get("/ecommerce/products", async (req, res) => {
+	const { q } = req.query;
 	try {
-		const data = await fetch("https://gist.githubusercontent.com/alhifnywahid/0d58fcea7f29b0a7dbb7526156189803/raw/57916552249b834c1b35804473f06fdee33615a8/blibli.json");
-		const final = await data.json();
+		const data = await getProducts(q);
 		if (!data) return res.status(404).json(messages.notRes);
 		res.json({
 			status: true,
 			creator,
-			data: final,
+			result: data,
+		});
+	} catch (e) {
+		res.status(500).json(messages.error);
+	}
+});
+
+router.get("/ecommerce/product", async (req, res) => {
+	const { productId } = req.query;
+	if (!productId)
+		return res.status(400).json({
+			status: false,
+			creator,
+			message: "id product wajib di isi!",
+		});
+	try {
+		const data = await getSingleProducts(productId);
+		if (!data) return res.status(404).json(messages.notRes);
+		res.json({
+			status: true,
+			creator,
+			result: data,
 		});
 	} catch (e) {
 		res.status(500).json(messages.error);
@@ -278,20 +300,6 @@ router.get("/downloader/spotify", async (req, res) => {
 
 // Tools Routes
 router.get("/tools/remini", async (req, res) => {
-	const { url } = req.query;
-	if (!url) return res.status(400).json(messages.url);
-
-	try {
-		const data = await danz.tools.remini(url);
-		if (!data) return res.status(404).json(messages.notRes);
-		res.json({ status: true, creator, result: data });
-	} catch (e) {
-		res.status(500).json(messages.error);
-	}
-});
-
-// Tools Routes
-router.get("/qris", async (req, res) => {
 	const { url } = req.query;
 	if (!url) return res.status(400).json(messages.url);
 
