@@ -39,6 +39,19 @@ const messages = {
 };
 
 
+router.post('/testpost', async (req, res) => {
+	if (!req.body) {
+		return res.status(400).send('tidak ada body.');
+	}
+  try {
+		res.json(req.body);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+
 router.get('/users', async (req, res) => {
   try {
     const users = await User.find();

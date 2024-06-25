@@ -17,6 +17,8 @@ const port = 3000;
 
 // Middleware Configuration
 app.enable("trust proxy");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.set("json spaces", 2);
 app.use(cors());
 app.use("/api", api);
