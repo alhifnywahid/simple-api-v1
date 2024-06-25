@@ -6,6 +6,7 @@ const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
 const datamhs = require("../scrapers/datamhs");
 const { getProducts, getSingleProducts, searchProducts } = require("../scrapers/ecommerce");
+const User = require('./../schema/db/addUser');
 const { creator } = config.options;
 
 // Log Info
@@ -36,6 +37,29 @@ const messages = {
 		result: "Error, Invalid URL",
 	},
 };
+
+router.get('/adduser', async (req, res) => {
+  const { username, password, email, notelepon } = req.query;
+
+  if (!username || !password || !email || !notelepon) {
+    return res.status(400).json({ msg: 'Please enter all fields' });
+  }
+
+  try {
+    let user = new User({
+      username,
+      password,
+      email,
+      notelepon
+    });
+
+    await user.save();
+    res.status(201).send('User added successfully');
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 // e - commerce
 router.get("/ecommerce/products", async (req, res) => {

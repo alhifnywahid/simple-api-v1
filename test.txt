@@ -1,0 +1,6 @@
+Oke sekarang sudah berjalan coba buatkan data baru untuk addUser yang mempunyai : 
+
+username:
+password:
+email:
+notelepon:

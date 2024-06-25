@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const chalk = require("chalk");
 const swaggerUi = require("swagger-ui-express");
+const connectDB = require('./schema/db/mongodb');
 
 const config = require("./schema/config");
 const docs = require("./schema/endpoint");
@@ -10,6 +11,8 @@ const api = require("./router/api");
 const anim = require("./lib/print");
 const app = express();
 
+// Connect Database
+connectDB();
 const port = 3000;
 
 // Middleware Configuration
