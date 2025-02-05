@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const danz = require("d-scrape");
 const router = express.Router();
 const config = require("../schema/config");
@@ -6,7 +7,7 @@ const skrep = require("../scrapers/ai");
 const payment = require("../scrapers/payment");
 const datamhs = require("../scrapers/datamhs");
 const { getProducts, getSingleProducts, searchProducts } = require("../scrapers/ecommerce");
-const User = require('./../schema/db/addUser');
+const User = require("./../schema/db/addUser");
 const { creator } = config.options;
 
 // Log Info
@@ -38,51 +39,49 @@ const messages = {
 	},
 };
 
-
-router.post('/testpost', async (req, res) => {
+router.post("/testpost", async (req, res) => {
 	if (!req.body) {
-		return res.status(400).send('tidak ada body.');
+		return res.status(400).send("tidak ada body.");
 	}
-  try {
+	try {
 		res.json(req.body);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
-  }
+	} catch (err) {
+		console.error(err);
+		res.status(500).send("Server Error");
+	}
 });
 
-
-router.get('/users', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
-  }
+router.get("/users", async (req, res) => {
+	try {
+		const users = await User.find();
+		res.json(users);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send("Server Error");
+	}
 });
 
-router.get('/adduser', async (req, res) => {
-  const { username, password, email, notelepon } = req.query;
+router.get("/adduser", async (req, res) => {
+	const { username, password, email, notelepon } = req.query;
 
-  if (!username || !password || !email || !notelepon) {
-    return res.status(400).json({ msg: 'Please enter all fields' });
-  }
+	if (!username || !password || !email || !notelepon) {
+		return res.status(400).json({ msg: "Please enter all fields" });
+	}
 
-  try {
-    let user = new User({
-      username,
-      password,
-      email,
-      notelepon
-    });
+	try {
+		let user = new User({
+			username,
+			password,
+			email,
+			notelepon,
+		});
 
-    await user.save();
-    res.status(201).send('User added successfully');
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
+		await user.save();
+		res.status(201).send("User added successfully");
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).send("Server Error");
+	}
 });
 
 // e - commerce
@@ -392,6 +391,25 @@ router.get("/tools/remini", async (req, res) => {
 		res.json({ status: true, creator, result: data });
 	} catch (e) {
 		res.status(500).json(messages.error);
+	}
+});
+
+// Anime Routes
+
+router.get("/anime/completed", async (req, res) => {
+	const { page } = req.query;
+	const pageQuery = page ? page : 1;
+
+	try {
+		const response = axios.get(`https://shizukana.vercel.app/api/completed?page=${pageQuery}`);
+		const { data } = await response;
+		res.json({
+			pagination: data.pagination,
+			data: data.data.animeList,
+		});
+	} catch (e) {
+		res.status(500).json(e);
+		console.log(e);
 	}
 });
 
