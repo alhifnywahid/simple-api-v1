@@ -413,4 +413,36 @@ router.get("/anime/completed", async (req, res) => {
 	}
 });
 
+router.get("/anime/completed/:id", async (req, res) => {
+	const { id } = req.params;
+	if (!id) return res.status(400).json(messages.url);
+
+	try {
+		const response = axios.get(`https://shizukana.vercel.app/api/episode/${id}-episode-1`);
+		const { data } = await response;
+		const { title, animeId, poster, releasedOn, defaultStreamingUrl, synopsis, genreList, recommendedEpisodeList } = data.data;
+		const result = {
+			title,
+			animeId,
+			poster,
+			releasedOn,
+			defaultStreamingUrl,
+			synopsis: synopsis.paragraphs[0],
+			genreList: genreList.map((genre) => genre.title),
+			episodeList: recommendedEpisodeList.map((episode) => {
+				return {
+					episodeId: episode.episodeId,
+					releaseDate: episode.releaseDate,
+				};
+			}),
+		};
+		res.json({
+			data: result,
+		});
+	} catch (e) {
+		res.status(500).json(e);
+		console.log(e);
+	}
+});
+
 module.exports = router;
